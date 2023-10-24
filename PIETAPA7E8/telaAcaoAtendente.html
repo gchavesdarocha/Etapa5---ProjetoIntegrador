@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tela ação atendente </title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+</head>
+
+<body>
+    <nav class="navbar navbar-light " style="background-color: rgb(107, 102, 102); padding: 0 20px; height: 60px;">
+        <a class="navbar-brand" href="#">
+            <img src="img/cinema.webp" width="30" height="30" class="d-inline-block align-top" alt="">
+            Cine Pipoca
+        </a>
+    </nav>
+    <fieldset class="form-group" id="telaPrincipal"
+        style="display:none; border: 1px solid #000;  padding: 20px; margin: left 100px; display:  flex; justify-content: center;">
+        <form style="margin-left: -100px;">
+            <div class="row">
+                <h4> O que se deseja realizar: </h4>
+                <legend class="col-form-label col-sm-2 pt-0">Funcionário</legend>
+                <div class="col-sm-10">
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios1" value="option1">
+                        <label class="form-check-label" for="gridRadios1">
+                            Cadastrar venda
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios2" value="option2">
+                        <label class="form-check-label" for="gridRadios2">
+                            Verificar lugares disponíveis
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios3" value="option3">
+                        <label class="form-check-label" for="gridRadios3">
+                            Sair
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group row" style="margin: top 100px;">
+                    <div class="col-sm-10">
+                        <button type="submit" class="btn btn-primary" id="informarDados0">Entrar</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </fieldset>
+
+    <fieldset class="form-group" id="cadastroVenda" style="display:none;  border: 1px solid #000; padding: 20px;">
+        <form style="margin-left: 250px;">
+            <div class="row">
+                <h4> O que se deseja realizar: </h4>
+                <legend class="col-form-label col-sm-2 pt-0">Funcionário</legend>
+                <div class="col-sm-10">
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="gridRadios10" id="gridRadios1" value="venda">
+                        <label class="form-check-label" for="gridRadios1">
+                            Somente bilhetes da sessão
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="gridRadios10" id="gridRadios2" value="combo">
+                        <label class="form-check-label" for="gridRadios2">
+                            Bilheteria + combo
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group row" style="margin: top 100px;">
+                    <div class="col-sm-10">
+                        <button type="submit" class="btn btn-primary" id="informarDados1">Entrar</button>
+                    </div>
+                </div>
+            </div>
+            </div>
+        </form>
+    </fieldset>
+
+    <fieldset class="form-group" id="cadastroQuantidadeDeBilhete"
+        style=" display:none; border: 1px solid #000; padding: 20px;">
+        <form style="margin-left: 250px;">
+            <h4>Digite a quantidade de bilhetes</h4>
+            <div class="col-md-6 mb-3">
+                <label for="entradaDenumeros" class="form-label"> Quantidade de bilhetes</label>
+                <input type="numero" class="form-control" id="quantidadeBilhete" aria-describedby="number">
+            </div>
+            <button type="submit" style="margin-left: 10px;" class="btn btn-primary" id="informarDados2">Enviar</button>
+        </form>
+    </fieldset>
+
+    <fieldset class="form-group" id="cadastroQuantidadeDeBilheteCombo"
+        style="display:none;  border: 1px solid #000; padding: 20px;">
+        <form style="margin-left: 250px;">
+            <h4>Digite a quantidade de bilhetes</h4>
+            <div class="col-md-6 mb-3">
+                <label for="entradaDenumeros" class="form-label"> Quantidade de bilhetes</label>
+                <input type="numero" class="form-control" id="quantidadeBilhete2" aria-describedby="number">
+            </div>
+            <legend class="col-form-label col-sm-2 pt-0">Opções de combo</legend>
+            <div class="col-sm-10">
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="gridRadios11" id="gridRadios1" value="comboGrande">
+                    <label class="form-check-label" for="gridRadios1">
+                        Combo Grande
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="gridRadios11" id="gridRadios2" value="comboMedio">
+                    <label class="form-check-label" for="gridRadios2">
+                        Combo Médio
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="gridRadios11" id="gridRadios3"
+                        value="ComboPequeno">
+                    <label class="form-check-label" for="gridRadios3">
+                        ComboPequeno
+                    </label>
+                </div>
+            </div>
+            <button type="submit" style="margin-left: 10px;" class="btn btn-primary" id="informarDados3">Enviar</button>
+        </form>
+    </fieldset>
+
+    <fieldset class="form-group" id="cadastroLugares" style="display:none; border: 1px solid #000; padding: 20px;">
+        <form style="margin-left: 250px;">
+            <h4>Cadastre lugares disponíveis na sessão</h4>
+            <div class="col-md-6 mb-3">
+                <label for="entradaDenumeros" class="form-label"> Digite os lugares</label>
+                <input type="numero" class="form-control" id="lugares" aria-describedby="number">
+            </div>
+            <button type="submit" style="margin-left: 10px;" class="btn btn-primary" id="informarDados4">Enviar</button>
+        </form>
+    </fieldset>
+
+    <script src="https://code.jquery.com/jquery-3.6.3.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous">
+        </script>
+
+    <script>
+        $(document).ready(function () {
+            const cadastroVendaDiv = $("#cadastroVenda");
+            const cadastroLugaresDiv = $("#cadastroLugares");
+            const cadastroBilheteDiv = $("#cadastroQuantidadeDeBilhete");
+            const cadastroBilheteComboDiv = $("#cadastroQuantidadeDeBilheteCombo");
+            const informarDadosButton = $("#informarDados0");
+            const informarDadosButton1 = $("#informarDados1");
+
+            // function limparCampos() {
+            //     const radioPrincipal = $("#telaPrincipal").find("gridRadios");
+            //     const radioPrincipal1 = $("#cadastroVenda").find("gridRadios10");
+            //     const inputQuantidadeBilhete = $("#quantidadeBilhete");
+            //     const inputQuantidadeBilheteCombo = $("#quantidadeBilhete2");
+            //     const radioPrincipal2 = $("#cadastroQuantidadeDeBilheteCombo").find("gridRadios11");
+            //     const inputLugares = $("#lugares");
+
+            //     radioPrincipal.empty();
+            //     radioPrincipal1.empty();
+            //     radioPrincipal2.empty();
+            //     inputQuantidadeBilhete.val("");
+            //     inputQuantidadeBilheteCombo.val("");
+            //     inputLugares.val("");
+            // }
+
+            informarDadosButton.on("click", function (event) {
+                event.preventDefault();
+
+                const gridRadios = $("input[name='gridRadios']:checked");
+                if (gridRadios.length === 0) {
+                    alert("Alguma opção precisa ser selecionada.");
+                    return;
+                }
+
+                const opcaoSelecionada = gridRadios.val();
+                if (opcaoSelecionada === "option1") {
+                    cadastroVendaDiv.show();
+                    cadastroLugaresDiv.hide();
+                } else if (opcaoSelecionada === "option2") {
+                    cadastroVendaDiv.hide();
+                    cadastroLugaresDiv.show();
+                } else {
+                    window.location.href = "login.html";
+                }
+            });
+
+            informarDadosButton1.on("click", function (event) {
+                event.preventDefault();
+
+                const gridRadios = $("input[name='gridRadios10']:checked");
+                if (gridRadios.length === 0) {
+                    alert("Alguma opção precisa ser selecionada.");
+                    return;
+                }
+                const opcaoSelecionada = gridRadios.val();
+                if (opcaoSelecionada === "venda") {
+                    cadastroBilheteDiv.show();
+                    cadastroBilheteComboDiv.hide();
+
+                } else if (opcaoSelecionada === "combo") {
+                    cadastroBilheteDiv.hide();
+                    cadastroBilheteComboDiv.show();
+
+                } else {
+                    window.location.href = "login.html";
+                }
+            });
+
+            $("input[name='gridRadios10']").on("change", function () {
+                cadastroBilheteDiv.hide();
+                cadastroBilheteComboDiv.hide();
+            });
+
+            $("input[name='gridRadios']").on("change", function () {
+                cadastroVendaDiv.hide();
+                cadastroLugaresDiv.hide();
+                cadastroBilheteDiv.hide();
+                cadastroBilheteComboDiv.hide();
+            });
+
+
+            $(document).ready(function () {
+
+                const quantidadeBilheteInput = $("#quantidadeBilhete");
+                const informarDados2Button = $("#informarDados2");
+
+                informarDados2Button.on("click", function (event) {
+                    event.preventDefault();
+
+                    const quantidadeBilheteValue = quantidadeBilheteInput.val();
+                    if (quantidadeBilheteValue.trim() === "") {
+                        alert("Por favor, insira a quantidade de bilhetes.");
+                        return;
+                    }
+
+                    var confirmed = confirm("Tem certeza que deseja cadastrar " + quantidadeBilheteValue + " bilhete(s)?");
+                    if (confirmed) {
+                        alert("Cadastro realizado com sucesso!");
+                        cadastroBilheteDiv.hide();
+                       // limparCampos();
+                    }
+                });
+            });
+
+            $(document).ready(function () {
+                const quantidadeBilheteInput2 = $("#cadastroLugares").find("#lugares");
+                const informarDados2Button = $("#informarDados4");
+
+                informarDados2Button.on("click", function (event) {
+                    event.preventDefault();
+
+                    const quantidadeBilheteValue1 = quantidadeBilheteInput2.val();
+                    if (quantidadeBilheteValue1.trim() === "") {
+                        alert("Por favor, insira a quantidade de bilhetes.");
+                        return;
+                    }
+
+                    var confirmed = confirm("Tem certeza que deseja cadastrar " + quantidadeBilheteValue1 + " bilhete(s)?");
+                    if (confirmed) {
+                        alert("Cadastro realizado com sucesso!");
+                        quantidadeBilheteInput2.val("");
+                        cadastroLugaresDiv.hide();
+                        //limparCampos();
+                    }
+                });
+            });
+
+            $(document).ready(function () {
+                const quantidadeBilheteComboInput = $("#quantidadeBilhete2");
+                const informarDados3Button = $("#informarDados3");
+                let isComboSelected = false;
+
+                informarDados3Button.on("click", function (event) {
+                    debugger;
+                    event.preventDefault();
+
+                    const quantidadeBilheteComboValue = quantidadeBilheteComboInput.val();
+                    if (quantidadeBilheteComboValue.trim() === "") {
+                        alert("Por favor, insira a quantidade de bilhetes do combo.");
+                        return;
+                    }
+
+                    if (!isComboSelected) {
+                        alert("Por favor, selecione uma opção de combo.");
+                        return;
+                    }
+
+                    var confirmed = confirm("Tem certeza que deseja cadastrar " + quantidadeBilheteComboValue + " bilhete(s) do combo?");
+                    if (confirmed) {
+                        realizarCadastro(quantidadeBilheteComboValue);
+                    }
+                });
+
+                $("input[name='gridRadios11']").on("change", function () {
+                    isComboSelected = true;
+                });
+
+                function realizarCadastro(quantidade) {
+                    console.log("Realizando cadastro de " + quantidade + " bilhete(s) do combo");
+                    alert("Cadastro realizado com sucesso!");
+                  //limparCampos();
+                }
+            });
+
+        });
+    </script>
+</body>
+
+</html>

@@ -13,4 +13,4 @@ cadastro do cliente e cadastros de vendas e também para um histórico de venda.
 e acesso a poltronas disponíveis na sessão. Além de serem adicionadas melhorias no layout, como mudanças de cor, botões e outras implentações 
 de " UX - User experiencia.
 
-## Repositório criado para arquivos do projeto integrador da etapa 5 - SENAC EAD RS - TDS
+## Repositório criado para arquivos do projeto integrador - SENAC EAD RS - TDS

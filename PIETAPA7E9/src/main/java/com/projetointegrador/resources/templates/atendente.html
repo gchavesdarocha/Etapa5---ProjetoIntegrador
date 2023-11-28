@@ -32,7 +32,7 @@
                     <div class="form-check">
                         <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios2" value="option2">
                         <label class="form-check-label" for="gridRadios2">
-                            Verificar lugares disponíveis
+                            Criar lugares disponíveis
                         </label>
                     </div>
                     <div class="form-check">
@@ -45,6 +45,8 @@
                 <div class="form-group row" style="margin: top 100px;">
                     <div class="col-sm-10">
                         <button type="submit" class="btn btn-primary" id="informarDados0">Entrar</button>
+                        <a th:href="@{/lugarDisponivel}" class="btn btn-primary">Lista de lugares
+                            disponíveis</a>
                     </div>
                 </div>
             </div>
@@ -103,20 +105,22 @@
             <legend class="col-form-label col-sm-2 pt-0">Opções de combo</legend>
             <div class="col-sm-10">
                 <div class="form-check">
-                    <input class="form-check-input" type="radio" name="gridRadios11" id="gridRadios1" value="comboGrande">
+                    <input class="form-check-input" type="radio" name="gridRadios11" id="gridRadios1"
+                        value="G">
                     <label class="form-check-label" for="gridRadios1">
                         Combo Grande
                     </label>
                 </div>
                 <div class="form-check">
-                    <input class="form-check-input" type="radio" name="gridRadios11" id="gridRadios2" value="comboMedio">
+                    <input class="form-check-input" type="radio" name="gridRadios11" id="gridRadios2"
+                        value="M">
                     <label class="form-check-label" for="gridRadios2">
                         Combo Médio
                     </label>
                 </div>
                 <div class="form-check">
                     <input class="form-check-input" type="radio" name="gridRadios11" id="gridRadios3"
-                        value="ComboPequeno">
+                        value="P">
                     <label class="form-check-label" for="gridRadios3">
                         ComboPequeno
                     </label>
@@ -130,8 +134,10 @@
         <form style="margin-left: 250px;">
             <h4>Cadastre lugares disponíveis na sessão</h4>
             <div class="col-md-6 mb-3">
-                <label for="entradaDenumeros" class="form-label"> Digite os lugares</label>
-                <input type="numero" class="form-control" id="lugares" aria-describedby="number">
+                <label for="lugares" class="form-label"> Digite os lugares</label>
+                <input type="number" class="form-control" id="lugares" aria-describedby="number">
+                <label for="sessao" class="form-label"> Digite a sessão</label>
+                <input class="form-control" id="sessao">
             </div>
             <button type="submit" style="margin-left: 10px;" class="btn btn-primary" id="informarDados4">Enviar</button>
         </form>
@@ -142,6 +148,8 @@
         integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous">
         </script>
     <script>
+
+        //opção de cadastrar venda ou cadastrar lugar
         $(document).ready(function () {
             const cadastroVendaDiv = $("#cadastroVenda");
             const cadastroLugaresDiv = $("#cadastroLugares");
@@ -167,10 +175,11 @@
                     cadastroVendaDiv.hide();
                     cadastroLugaresDiv.show();
                 } else {
-                    window.location.href = "login.html";
+                    window.location.href = "//" + window.location.host;
                 }
             });
 
+            //somente bilhete ou combo
             informarDadosButton1.on("click", function (event) {
                 event.preventDefault();
 
@@ -189,7 +198,7 @@
                     cadastroBilheteComboDiv.show();
 
                 } else {
-                    window.location.href = "login.html";
+                    window.location.href = "";
                 }
             });
 
@@ -205,6 +214,7 @@
                 cadastroBilheteComboDiv.hide();
             });
 
+            //Somente bilhete
             $(document).ready(function () {
 
                 const quantidadeBilheteInput = $("#quantidadeBilhete");
@@ -214,21 +224,105 @@
                     event.preventDefault();
 
                     const quantidadeBilheteValue = quantidadeBilheteInput.val();
+
                     if (quantidadeBilheteValue.trim() === "") {
                         alert("Por favor, insira a quantidade de bilhetes.");
                         return;
                     }
 
+                    const venda = {
+                        qntdBilhete: quantidadeBilheteValue
+                    }
+
                     var confirmed = confirm("Tem certeza que deseja cadastrar " + quantidadeBilheteValue + " bilhete(s)?");
                     if (confirmed) {
+                        $.ajax({
+                            type: "POST",
+                            url: "/venda/salvarVenda",
+                            contentType: "application/json",
+                            data: JSON.stringify(venda),
+                            success: function (response) {
+                                alert("Cadastro realizado com sucesso!");
+                                cadastroBilheteDiv.hide();
+                                $("#quantidadeBilhete").val("");
+                            },
+                            error: function (error) {
+                                console.error("Erro ao cadastrar bilhetes:", error);
+                                alert("Erro ao cadastrar bilhetes. Verifique o console para mais detalhes.");
+                            }
+                        });
                         alert("Cadastro realizado com sucesso!");
                         cadastroBilheteDiv.hide();
                     }
                 });
             });
 
+            //bilhete + combo
+            $(document).ready(function () {
+                const quantidadeBilheteComboInput = $("#quantidadeBilhete2");
+                const informarDados3Button = $("#informarDados3");
+                let isComboSelected = false;
+
+                informarDados3Button.on("click", function (event) {
+                    event.preventDefault();
+
+                    const quantidadeBilheteComboValue = quantidadeBilheteComboInput.val();
+                    if (quantidadeBilheteComboValue.trim() === "") {
+                        alert("Por favor, insira a quantidade de bilhetes do combo.");
+                        return;
+                    }
+                    
+
+                    const gridRadios = $("input[name='gridRadios11']:checked");
+
+                    if (gridRadios.length === 0) {
+                        alert("Por favor, selecione uma opção.");
+                        return;
+                    }
+
+                    const tipoCombo = gridRadios.val();
+
+                    const venda = {
+                        qntdBilhete: quantidadeBilheteComboValue,
+                        tipoCombo: tipoCombo
+                    }
+
+                    var confirmed = confirm("Tem certeza que deseja cadastrar " + quantidadeBilheteComboValue + " bilhete(s) do combo " + tipoCombo + "?");
+                    if (confirmed) {
+                        $.ajax({
+                            type: "POST",
+                            url: "/venda/salvarVenda",
+                            contentType: "application/json",
+                            data: JSON.stringify(venda),
+                            success: function (response) {
+                                console.log("Realizando cadastro de " + quantidadeBilheteComboValue + " bilhete(s) do combo " + tipoCombo);
+                                cadastroBilheteComboDiv.hide();
+
+                                quantidadeBilheteComboInput.val("");
+                                gridRadios.val("");
+                            },
+                            error: function (error) {
+                                console.error("Erro ao cadastrar bilhetes:", error);
+                                alert("Erro ao cadastrar bilhetes. Verifique o console para mais detalhes.");
+                            }
+                        });
+                    }
+                });
+
+                $("input[name='gridRadios11']").on("change", function () {
+                    isComboSelected = true;
+                });
+
+                function realizarCadastro(quantidade) {
+                    console.log("Realizando cadastro de " + quantidade + " bilhete(s) do combo");
+                    alert("Cadastro realizado com sucesso!");
+                }
+            });
+
+            //Cadastrar lugares
             $(document).ready(function () {
                 const quantidadeBilheteInput2 = $("#cadastroLugares").find("#lugares");
+                const sessaoInput = $("#cadastroLugares").find("#sessao");
                 const informarDados2Button = $("#informarDados4");
 
                 informarDados2Button.on("click", function (event) {
@@ -240,50 +334,35 @@
                         return;
                     }
 
-                    var confirmed = confirm("Tem certeza que deseja cadastrar " + quantidadeBilheteValue1 + " lugare(s)?");
+                    const sessao = sessaoInput.val();
+                    
+                    if (sessao.trim() === "") {
+                        alert("Por favor, insira a sessão.");
+                        return;
+                    }
+
+                    const lugarDisponivel = {
+                        quantidade: quantidadeBilheteValue1,
+                        sessao: sessao
+                    }
+
+                    var confirmed = confirm("Tem certeza que deseja cadastrar " + quantidadeBilheteValue1 + " lugare(s) na sessão " + sessao + "?");
                     if (confirmed) {
                         alert("Cadastro realizado com sucesso!");
-                        quantidadeBilheteInput2.val("");
-                        cadastroLugaresDiv.hide();
+                        $.ajax({
+                            type: "POST",
+                            url: "/lugarDisponivel/salvarLugarDisponivel",
+                            contentType: "application/json",
+                            data: JSON.stringify(lugarDisponivel),
+                            success: function (response) {
+                                alert("Cadastro realizado com sucesso!");
+                                quantidadeBilheteInput2.val("");
+                                sessaoInput.val("");
+                                cadastroLugaresDiv.hide();
+                            }
+                        });
                     }
                 });
-            });
-
-            $(document).ready(function () {
-                const quantidadeBilheteComboInput = $("#quantidadeBilhete2");
-                const informarDados3Button = $("#informarDados3");
-                let isComboSelected = false;
-
-                informarDados3Button.on("click", function (event) {
-                    debugger;
-                    event.preventDefault();
-
-                    const quantidadeBilheteComboValue = quantidadeBilheteComboInput.val();
-                    if (quantidadeBilheteComboValue.trim() === "") {
-                        alert("Por favor, insira a quantidade de bilhetes do combo.");
-                        return;
-                    }
-
-                    if (!isComboSelected) {
-                        alert("Por favor, selecione uma opção de combo.");
-                        return;
-                    }
-
-                    var confirmed = confirm("Tem certeza que deseja cadastrar " + quantidadeBilheteComboValue + " bilhete(s) do combo?");
-                    if (confirmed) {
-                        realizarCadastro(quantidadeBilheteComboValue);
-                    }
-                });
-
-                $("input[name='gridRadios11']").on("change", function () {
-                    isComboSelected = true;
-                });
-
-                function realizarCadastro(quantidade) {
-                    console.log("Realizando cadastro de " + quantidade + " bilhete(s) do combo");
-                    alert("Cadastro realizado com sucesso!");
-                  
-                }
             });
         });
     </script>

@@ -46,6 +46,8 @@
                 <div class="form-group row" style="margin: top 100px;">
                     <div class="col-sm-10">
                         <button type="submit" class="btn btn-primary" id="informarDados0">Entrar</button>
+                        <a th:href="@{/venda}" class="btn btn-primary">Lista de vendas</a>
+                        <a th:href="@{/cliente}" class="btn btn-primary">Lista de clientes</a>
                     </div>
                 </div>
             </div>
@@ -65,8 +67,8 @@
                     id="inputCpf" aria-describedby="emailHelp">
             </div>
             <div class="col-md-6 mb-3">
-                <label for="exampleInputEmail1" class="form-label">Idade</label> <input type="number" class="form-control"
-                    id="inputIdade" aria-describedby="emailHelp">
+                <label for="exampleInputEmail1" class="form-label">Idade</label> <input type="number"
+                    class="form-control" id="inputIdade" aria-describedby="emailHelp">
             </div>
             <button type="submit" style="margin-left: 10px;" class="btn btn-primary" id="informarDados1">Enviar</button>
         </form>
@@ -119,20 +121,20 @@
                 <input type="number" class="form-control" id="inputBilhete" aria-describedby="emailHelp">
             </div>
             <div class="form-check">
-                <input class="form-check-input" type="radio" name="gridRadios11" id="gridRadios2" value="option2">
-                <label class="form-check-label" for="gridRadios2">
+                <input class="form-check-input" type="radio" name="gridRadios11" id="gridRadios1" value="P">
+                <label class="form-check-label" for="gridRadios1">
                     Combo Pequeno
                 </label>
             </div>
             <div class="form-check">
-                <input class="form-check-input" type="radio" name="gridRadios11" id="gridRadios2" value="option2">
+                <input class="form-check-input" type="radio" name="gridRadios11" id="gridRadios2" value="M">
                 <label class="form-check-label" for="gridRadios2">
                     Combo Médio
                 </label>
             </div>
             <div class="form-check">
-                <input class="form-check-input" type="radio" name="gridRadios11" id="gridRadios2" value="option2">
-                <label class="form-check-label" for="gridRadios2">
+                <input class="form-check-input" type="radio" name="gridRadios11" id="gridRadios3" value="G">
+                <label class="form-check-label" for="gridRadios3">
                     Combo Grande
                 </label>
             </div>
@@ -175,10 +177,11 @@
                     cadastroClienteDiv.hide();
                     cadastroVendaDiv.show();
                 } else {
-                    window.location.href = "login.html";
+                    window.location.href = "//" + window.location.host;
                 }
             });
 
+            //opcao da venda
             informarDadosButton2.on("click", function (event) {
                 event.preventDefault();
 
@@ -196,10 +199,11 @@
                     cadastroBilheteDiv.hide();
                     cadastroComboDiv.show();
                 } else {
-                    window.location.href = "login.html";
+                    window.location.href = "";
                 }
             });
 
+            //somente bilhetes
             informarDadosButton3.on("click", function (event) {
                 event.preventDefault();
 
@@ -210,13 +214,31 @@
                     return;
                 }
 
+                const venda = {
+                    qntdBilhete: quantidadeBilhetesValue
+                }
+
                 var confirmed = confirm("Tem certeza que deseja cadastrar " + quantidadeBilhetesValue + " bilhete(s)?");
                 if (confirmed) {
-                    alert("Cadastro realizado com sucesso!");
-                    cadastroBilheteDiv.hide();
+                    $.ajax({
+                        type: "POST",
+                        url: "/venda/salvarVenda",
+                        contentType: "application/json",
+                        data: JSON.stringify(venda),
+                        success: function (response) {
+                            alert("Cadastro realizado com sucesso!");
+                            cadastroBilheteDiv.hide();
+                            $("#input1").val("");
+                        },
+                        error: function (error) {
+                            console.error("Erro ao cadastrar bilhetes:", error);
+                            alert("Erro ao cadastrar bilhetes. Verifique o console para mais detalhes.");
+                        }
+                    });
                 }
             });
 
+            //bilheteria + combo
             $(document).ready(function () {
 
                 const quantidadeBilheteComboInput = $("#inputBilhete");
@@ -227,35 +249,50 @@
                     event.preventDefault();
 
                     const quantidadeBilhetesCombo = quantidadeBilheteComboInput.val();
+
                     if (quantidadeBilhetesCombo.trim() === "") {
                         alert("Por favor, insira a quantidade de bilhetes do combo.");
                         return;
                     }
 
-                    if (!isComboSelected) {
-                        alert("Por favor, selecione uma opção de combo.");
+                    const gridRadios = $("input[name='gridRadios11']:checked");
+
+                    if (gridRadios.length === 0) {
+                        alert("Por favor, selecione uma opção.");
                         return;
                     }
 
-                    // Confirmação de cadastro
-                    var confirmed = confirm("Tem certeza que deseja cadastrar " + quantidadeBilhetesCombo + " bilhete(s) do combo ?");
+                    const tipoCombo = gridRadios.val();
+
+                    const venda = {
+                        qntdBilhete: quantidadeBilhetesCombo,
+                        tipoCombo: tipoCombo
+                    }
+
+                    var confirmed = confirm("Tem certeza que deseja cadastrar " + quantidadeBilhetesCombo + " bilhete(s) do combo " + tipoCombo + "?");
                     if (confirmed) {
-                        realizarCadastro(quantidadeBilhetesCombo);
-                        alert("Cadastro realizado com sucesso!");
+                        $.ajax({
+                            type: "POST",
+                            url: "/venda/salvarVenda",
+                            contentType: "application/json",
+                            data: JSON.stringify(venda),
+                            success: function (response) {
+                                console.log("Realizando cadastro de " + quantidadeBilhetesCombo + " bilhete(s) do combo " + tipoCombo);
+                                cadastroComboDiv.hide();
+
+                                quantidadeBilheteComboInput.val("");
+                                gridRadios.val("");
+                            },
+                            error: function (error) {
+                                console.error("Erro ao cadastrar bilhetes:", error);
+                                alert("Erro ao cadastrar bilhetes. Verifique o console para mais detalhes.");
+                            }
+                        });
                     }
                 });
-
-                $("input[name='gridRadios11']").on("change", function () {
-                    isComboSelected = true;
-                });
-
-                function realizarCadastro(quantidade) {
-                    console.log("Realizando cadastro de " + quantidade + " bilhete(s) do combo");
-                    alert("Cadastro realizado com sucesso!");
-                    //limparCampos();
-                }
             });
 
+            //cadastro de cliente
             $(document).ready(function () {
                 const inputNomeCliente = $("#cadastroCliente").find("#inputName");
                 const inputCpf = $("#cadastroCliente").find("#inputCpf");
@@ -273,12 +310,30 @@
                         alert("Por favor, preencha os campos.");
                         return;
                     }
-
-                    
-                    var confirmed = confirm("Tem certeza que deseja cadastrar o Nome: " + cadastroNome + " O cpf :" + cadastroCpf + "e a idade" + inputIdade);
+                    const cliente = {
+                        nome: cadastroNome,
+                        cpf: cadastroCpf,
+                        idade: cadastroIdade
+                    };
+                    var confirmed = confirm("Tem certeza que deseja cadastrar o nome: " + cadastroNome + ", o CPF: " + cadastroCpf + " e a idade: " + cadastroIdade);
                     if (confirmed) {
-                        alert("Cadastro realizado com sucesso!");
-                        cadastroClienteDiv.hide();
+                        $.ajax({
+                            type: "POST",
+                            url: "/cliente/salvarCliente",
+                            contentType: "application/json",
+                            data: JSON.stringify(cliente),
+                            success: function (response) {
+                                alert("Cadastro realizado com sucesso!");
+                                cadastroClienteDiv.hide();
+                                inputNomeCliente.val("");
+                                inputCpf.val("");
+                                inputIdade.val("");
+                            },
+                            error: function (error) {
+                                console.error("Erro ao cadastrar cliente:", error);
+                                alert("Erro ao cadastrar cliente. Verifique o console para mais detalhes.");
+                            }
+                        });
                     }
                 });
             });
